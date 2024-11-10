@@ -62,15 +62,15 @@ version metal_device_backend::get_version() const noexcept
 
 bool metal_device_backend::is_available() const noexcept
 {
-    auto devs = MTL::CopyAllDevices();
-    int count = sizeof(devs);
+    NS::Array * devs = MTL::CopyAllDevices();
+    const int count = sizeof(*devs);
     return count > 0;
 }
 
 void metal_device_backend::enumerate_devices(std::vector<std::size_t> &ids) const
 {
-    auto devs = MTL::CopyAllDevices();
-    int count = sizeof(devs);
+    NS::Array * devs = MTL::CopyAllDevices();
+    const int count = sizeof(devs);
     
     ids.resize(count);
     std::iota(
@@ -82,21 +82,21 @@ void metal_device_backend::enumerate_devices(std::vector<std::size_t> &ids) cons
 bool metal_device_backend::get_device_properties(std::size_t id, 
                                                 device_properties &desc ) const
 {
-    auto devs = MTL::CopyAllDevices();
-    int count = sizeof(devs);
-
+    NS::Array * devs = MTL::CopyAllDevices();
+    const int count = sizeof(&devs);
     const auto device = static_cast<int>(id);
     const auto result = device < count;
+
     if (result)
     {
-        MTL::Device * dev = MTL::CreateSystemDefaultDevice();
+        MTL::Device * dev = static_cast<MTL::Device *>(devs->object(0));
 
         device_type type;
         std::string location;
         switch (dev->location()) {
             case MTL::DeviceLocationBuiltIn:
                 type = device_type::integrated_gpu;
-                location = "Apple Silicon or Intel HD/Iris";
+                location = "Apple Silicon, Intel Iris or Discrete laptop GPU";
                 break;
             case MTL::DeviceLocationSlot:
                 type = device_type::gpu;
