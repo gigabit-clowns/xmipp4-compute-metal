@@ -63,14 +63,14 @@ version metal_device_backend::get_version() const noexcept
 bool metal_device_backend::is_available() const noexcept
 {
     NS::Array * devs = MTL::CopyAllDevices();
-    const int count = sizeof(*devs);
+    const int count = devs->count();
     return count > 0;
 }
 
 void metal_device_backend::enumerate_devices(std::vector<std::size_t> &ids) const
 {
     NS::Array * devs = MTL::CopyAllDevices();
-    const int count = sizeof(devs);
+    const int count = devs->count();
     
     ids.resize(count);
     std::iota(
@@ -83,7 +83,7 @@ bool metal_device_backend::get_device_properties(std::size_t id,
                                                 device_properties &desc ) const
 {
     NS::Array * devs = MTL::CopyAllDevices();
-    const int count = sizeof(&devs);
+    const int count = devs->count();
     const auto device = static_cast<int>(id);
     const auto result = device < count;
 
@@ -121,7 +121,7 @@ std::unique_ptr<device>
 metal_device_backend::create_device(std::size_t id)
 {
     const NS::Array * devs = MTL::CopyAllDevices();
-    int count = sizeof(devs);
+    int count = devs->count();
     if (static_cast<int>(id) >= count)
     {
         throw std::invalid_argument("Invalid device id");
@@ -134,7 +134,7 @@ std::shared_ptr<device>
 metal_device_backend::create_device_shared(std::size_t id)
 {
     const NS::Array * devs = MTL::CopyAllDevices();
-    int count = sizeof(devs);
+    int count = devs->count();
     if (static_cast<int>(id) >= count)
     {
         throw std::invalid_argument("Invalid device id");
