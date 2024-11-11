@@ -106,9 +106,13 @@ bool metal_device_backend::get_device_properties(std::size_t id,
                 type = device_type::gpu;
                 location = "External Enclosure";
                 break;
+            default:
+                type = device_type::unknown;
+                location = "Unspecified location";
+                break;
         }
         // Write
-        desc.set_name(dev->name());
+        desc.set_name(dev->name()->cString(NS::StringEncoding::UTF8StringEncoding));
         desc.set_physical_location(std::move(location));
         desc.set_type(type);
         desc.set_total_memory_bytes(dev->recommendedMaxWorkingSetSize());
