@@ -40,3 +40,9 @@ build
 
 # CTest
 Testing/Temporary
+
+# Metal-CPP
+src/metal-cpp
+
+# Apple
+.DS_Store
