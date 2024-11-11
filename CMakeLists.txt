@@ -29,6 +29,10 @@ project(
 	LANGUAGES C CXX
 )
 
+if (NOT CMAKE_HOST_APPLE)
+	message(FATAL_ERROR "This repository only compiles on MacOS, CMake will exit.")
+endif()
+
 # Include CMake packages
 include(GNUInstallDirs)
 include(CTest)
@@ -71,14 +75,14 @@ target_link_libraries(
 	${PROJECT_NAME} 
 	PRIVATE
 		xmipp4-core
-		# CUDA::cudart
-    # METAL_CPP::metalrt
 )
-target_link_libraries(METAL_CPP
-        "-framework Metal"
-        "-framework MetalKit"
-        "-framework Foundation"
-)
+
+# TODO: Descargar MTL para la maquina en la que se istalaceona
+#target_link_libraries(METAL_CPP
+#        "-framework Metal"
+#        "-framework MetalKit"
+#        "-framework Foundation"
+#)
 
 # Set up clang-tidy
 if(XMIPP4_COMPUTE_METAL_LINT_CLANG_TIDY)
