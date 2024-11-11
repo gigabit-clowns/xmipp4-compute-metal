@@ -29,7 +29,7 @@ endif()
 
 # Exit if OS too old for Metal-CPP
 # Oldest supported version is MacOS12
-message("${CMAKE_HOST_SYSTEM_VERSION}")
+message("Running on Darwin ${CMAKE_HOST_SYSTEM_VERSION}")
 if (CMAKE_HOST_SYSTEM_VERSION LESS 21)
 	message(FATAL_ERROR "Your version is lesser than 12 - Monterey. Cmake will exit.")
 endif()
@@ -44,6 +44,7 @@ project(
 # Include CMake packages
 include(GNUInstallDirs)
 include(CTest)
+include(FetchContent)
 
 # Declare build options
 option(XMIPP4_COMPUTE_METAL_LINT_CLANG_TIDY "Lint with clang-tidy" OFF)
@@ -53,8 +54,32 @@ if(NOT TARGET xmipp4-core)
 	find_package(xmipp4-core REQUIRED)
 endif()
 
-# Download dependencies
+# Download METAL-CPP dependencies
+# MacOS15(24), 14(23), 13(22), 12 (21)
+function(CloneRepository repoURL branch project sourceDir)
+	message("Cloning ${project} (${branch}) into ${sourceDir}...")
+	FetchContent_Declare(
+		"${project}"
+		GIT_REPOSITORY "${repoURL}"
+		SOURCE_DIR "${sourceDir}"
+		GIT_TAG "${branch}"
+		CONFIGURE_COMMAND ""
+		BUILD_COMMAND ""
+		INSTALL_COMMAND ""
+	)
+	FetchContent_MakeAvailable(${project})
+endfunction()
+if (CMAKE_SYSTEM_VERSION GREATER_EQUAL 24)
+	set(XMIPP4_MTL_GIT_TAG "metal-cpp_macOS15_iOS18")
+elseif (CMAKE_SYSTEM_VERSION GREATER_EQUAL 23)
+	set(XMIPP4_MTL_GIT_TAG "metal-cpp_macOS14.2_iOS17.2")
+elseif (CMAKE_SYSTEM_VERSION GREATER_EQUAL 22)
+	set(XMIPP4_MTL_GIT_TAG "metal-cpp_macOS13_iOS16")
+elseif (CMAKE_SYSTEM_VERSION GREATER_EQUAL 21)
+	set(XMIPP4_MTL_GIT_TAG "metal-cpp_macOS12_iOS15")
+endif()
 
+CloneRepository("https://github.com/bkaradzic/metal-cpp" "${XMIPP4_MTL_GIT_TAG}" "METAL_CPP" "${CMAKE_CURRENT_LIST_DIR}/src/metal-cpp")
 
 # Find all source and header files
 file(
