@@ -22,16 +22,24 @@
 
 cmake_minimum_required(VERSION 3.18)
 
+# Exit if not an OSX system
+if (NOT CMAKE_HOST_APPLE)
+	message(FATAL_ERROR "This repository only compiles on MacOS, CMake will exit.")
+endif()
+
+# Exit if OS too old for Metal-CPP
+# Oldest supported version is MacOS12
+message("${CMAKE_HOST_SYSTEM_VERSION}")
+if (CMAKE_HOST_SYSTEM_VERSION LESS 21)
+	message(FATAL_ERROR "Your version is lesser than 12 - Monterey. Cmake will exit.")
+endif()
+
 # Define the project
 project(
   xmipp4-compute-metal
 	VERSION 0.1.0 
 	LANGUAGES C CXX
 )
-
-if (NOT CMAKE_HOST_APPLE)
-	message(FATAL_ERROR "This repository only compiles on MacOS, CMake will exit.")
-endif()
 
 # Include CMake packages
 include(GNUInstallDirs)
@@ -45,8 +53,8 @@ if(NOT TARGET xmipp4-core)
 	find_package(xmipp4-core REQUIRED)
 endif()
 
-# Find dependencies
-# find_library(METAL Metal)
+# Download dependencies
+
 
 # Find all source and header files
 file(
