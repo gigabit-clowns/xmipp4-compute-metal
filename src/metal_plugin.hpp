@@ -21,45 +21,39 @@
  ***************************************************************************/
 
 /**
- * @file metal_device_backend.hpp
+ * @file metal_plugin.hpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
  * @author Mikel Iceta Tena (miceta@cnb.csic.es)
- * @brief Defines metal_device_backend interface
+ * @brief Definition of the metal_plugin class
  * @date 2024-11-08
  * 
  */
 
-#include <xmipp4/core/compute/device_backend.hpp>
+
+#include <xmipp4/core/plugin.hpp>
 
 namespace xmipp4 
 {
-namespace compute
-{
 
-class device_manager;
-
-
-
-class metal_device_backend final
-    : public device_backend
+class metal_plugin final
+    : public plugin
 {
 public:
-    const std::string& get_name() const noexcept final;
-    version get_version() const noexcept final;
-    bool is_available() const noexcept final;
+    metal_plugin() = default;
+    metal_plugin(const metal_plugin& other) = default;
+    metal_plugin(metal_plugin&& other) = default;
+    virtual ~metal_plugin() = default;
 
-    void enumerate_devices(std::vector<std::size_t> &ids) const final;
-    bool get_device_properties(std::size_t id, device_properties &desc) const final;
+    metal_plugin& operator=(const metal_plugin& other) = default;
+    metal_plugin& operator=(metal_plugin&& other) = default;
 
-    std::unique_ptr<device> create_device(std::size_t id) final;
-    std::shared_ptr<device> create_device_shared(std::size_t id) final;
-
-    static bool register_at(device_manager &manager);
+    const std::string& get_name() const noexcept override;
+    version get_version() const noexcept override;
+    void register_at(interface_registry& registry) const override;
 
 private:
-    static const std::string m_name;
+    static const std::string name;
 
-}; 
+};
 
-} // namespace compute
 } // namespace xmipp4

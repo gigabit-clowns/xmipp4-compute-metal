@@ -1,5 +1,3 @@
-#pragma once
-
 /***************************************************************************
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,45 +19,30 @@
  ***************************************************************************/
 
 /**
- * @file metal_device_backend.hpp
+ * @file metal_plugin_hook.cpp
  * @author Oier Lauzirika Zarrabeitia (oierlauzi@bizkaia.eu)
  * @author Mikel Iceta Tena (miceta@cnb.csic.es)
- * @brief Defines metal_device_backend interface
+ * @brief Exports the entry point for this plugin.
  * @date 2024-11-08
  * 
  */
 
-#include <xmipp4/core/compute/device_backend.hpp>
+#include "metal_plugin.hpp"
 
-namespace xmipp4 
+#include <xmipp4/core/platform/dynamic_shared_object.h>
+
+#if defined(XMIPP4_COMPUTE_METAL_EXPORTING)
+    #define XMIPP4_COMPUTE_METAL_API XMIPP4_EXPORT
+#else
+    #define XMIPP4_COMPUTE_METAL_API XMIPP4_IMPORT
+#endif
+
+static const xmipp4::metal_plugin instance;
+
+extern "C"
 {
-namespace compute
+XMIPP4_COMPUTE_METAL_API const xmipp4::plugin* xmipp4_get_plugin() 
 {
-
-class device_manager;
-
-
-
-class metal_device_backend final
-    : public device_backend
-{
-public:
-    const std::string& get_name() const noexcept final;
-    version get_version() const noexcept final;
-    bool is_available() const noexcept final;
-
-    void enumerate_devices(std::vector<std::size_t> &ids) const final;
-    bool get_device_properties(std::size_t id, device_properties &desc) const final;
-
-    std::unique_ptr<device> create_device(std::size_t id) final;
-    std::shared_ptr<device> create_device_shared(std::size_t id) final;
-
-    static bool register_at(device_manager &manager);
-
-private:
-    static const std::string m_name;
-
-}; 
-
-} // namespace compute
-} // namespace xmipp4
+    return &instance;
+}
+}

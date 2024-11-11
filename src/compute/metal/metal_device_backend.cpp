@@ -29,7 +29,7 @@
 
 #include "metal_device_backend.hpp"
 
-#include "metal_device.hpp"
+//#include "metal_device.hpp"
 
 #include <xmipp4/core/compute/device_manager.hpp>
 
@@ -127,7 +127,8 @@ metal_device_backend::create_device(std::size_t id)
         throw std::invalid_argument("Invalid device id");
     }
 
-    return std::make_unique<metal_device>(id);
+    //return std::make_unique<metal_device>(id);
+    return nullptr;
 }
 
 std::shared_ptr<device> 
@@ -140,7 +141,8 @@ metal_device_backend::create_device_shared(std::size_t id)
         throw std::invalid_argument("Invalid device id");
     }
 
-    return std::make_shared<metal_device>(id);
+    //return std::make_shared<metal_device>(id);
+    return nullptr;
 }
 
 bool metal_device_backend::register_at(device_manager &manager)

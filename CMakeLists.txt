@@ -54,21 +54,7 @@ if(NOT TARGET xmipp4-core)
 	find_package(xmipp4-core REQUIRED)
 endif()
 
-# Download METAL-CPP dependencies
-# MacOS15(24), 14(23), 13(22), 12 (21)
-function(CloneRepository repoURL branch project sourceDir)
-	message("Cloning ${project} (${branch}) into ${sourceDir}...")
-	FetchContent_Declare(
-		"${project}"
-		GIT_REPOSITORY "${repoURL}"
-		SOURCE_DIR "${sourceDir}"
-		GIT_TAG "${branch}"
-		CONFIGURE_COMMAND ""
-		BUILD_COMMAND ""
-		INSTALL_COMMAND ""
-	)
-	FetchContent_MakeAvailable(${project})
-endfunction()
+# TODO: Change this to a command-line parameter configurable version
 if (CMAKE_SYSTEM_VERSION GREATER_EQUAL 24)
 	set(XMIPP4_MTL_GIT_TAG "metal-cpp_macOS15_iOS18")
 elseif (CMAKE_SYSTEM_VERSION GREATER_EQUAL 23)
@@ -79,7 +65,27 @@ elseif (CMAKE_SYSTEM_VERSION GREATER_EQUAL 21)
 	set(XMIPP4_MTL_GIT_TAG "metal-cpp_macOS12_iOS15")
 endif()
 
-CloneRepository("https://github.com/bkaradzic/metal-cpp" "${XMIPP4_MTL_GIT_TAG}" "METAL_CPP" "${CMAKE_CURRENT_LIST_DIR}/src/metal-cpp")
+# Download METAL-CPP dependencies
+# MacOS15(24), 14(23), 13(22), 12 (21)
+set(METAL_CPP_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/metal-cpp")
+FetchContent_Declare(
+	"METAL_CPP"
+	GIT_REPOSITORY "https://github.com/bkaradzic/metal-cpp.git"
+	GIT_TAG ${XMIPP4_MTL_GIT_TAG}
+	SOURCE_DIR "${METAL_CPP_SOURCE_DIR}"
+	CONFIGURE_COMMAND ""
+	BUILD_COMMAND ""
+	INSTALL_COMMAND ""
+)
+FetchContent_MakeAvailable("METAL_CPP")
+
+add_library(METAL_CPP INTERFACE IMPORTED)
+target_include_directories(METAL_CPP INTERFACE ${METAL_CPP_SOURCE_DIR})
+target_link_libraries(METAL_CPP INTERFACE
+         "-framework Metal"
+         "-framework MetalKit"
+         "-framework Foundation"
+)
 
 # Find all source and header files
 file(
@@ -108,14 +114,8 @@ target_link_libraries(
 	${PROJECT_NAME} 
 	PRIVATE
 		xmipp4-core
+		METAL_CPP
 )
-
-# TODO: Descargar MTL para la maquina en la que se istalaceona
-#target_link_libraries(METAL_CPP
-#        "-framework Metal"
-#        "-framework MetalKit"
-#        "-framework Foundation"
-#)
 
 # Set up clang-tidy
 if(XMIPP4_COMPUTE_METAL_LINT_CLANG_TIDY)
