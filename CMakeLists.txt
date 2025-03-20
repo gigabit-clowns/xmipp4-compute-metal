@@ -54,24 +54,27 @@ if(NOT TARGET xmipp4-core)
 	find_package(xmipp4-core REQUIRED)
 endif()
 
-# TODO: Change this to a command-line parameter configurable version
-if (CMAKE_SYSTEM_VERSION GREATER_EQUAL 24)
-	set(XMIPP4_MTL_GIT_TAG "metal-cpp_macOS15_iOS18")
-elseif (CMAKE_SYSTEM_VERSION GREATER_EQUAL 23)
-	set(XMIPP4_MTL_GIT_TAG "metal-cpp_macOS14.2_iOS17.2")
-elseif (CMAKE_SYSTEM_VERSION GREATER_EQUAL 22)
-	set(XMIPP4_MTL_GIT_TAG "metal-cpp_macOS13_iOS16")
-elseif (CMAKE_SYSTEM_VERSION GREATER_EQUAL 21)
-	set(XMIPP4_MTL_GIT_TAG "metal-cpp_macOS12_iOS15")
-endif()
+# Get MacOS version
+execute_process(
+    COMMAND sw_vers -productVersion
+    OUTPUT_VARIABLE MACOS_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Extract major and minor version
+string(REPLACE "." ";" VERSION_LIST ${MACOS_VERSION})
+list(GET VERSION_LIST 0 MACOS_MAJOR)
+list(GET VERSION_LIST 1 MACOS_MINOR)
+
+# Construct the branch name based on MacOS version
+set(METAL_CPP_BRANCH "macos-${MACOS_MAJOR}.${MACOS_MINOR}")
 
 # Download METAL-CPP dependencies
-# MacOS15(24), 14(23), 13(22), 12 (21)
 set(METAL_CPP_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/metal-cpp")
 FetchContent_Declare(
 	"METAL_CPP"
 	GIT_REPOSITORY "https://github.com/bkaradzic/metal-cpp.git"
-	GIT_TAG ${XMIPP4_MTL_GIT_TAG}
+	GIT_TAG "metal-cpp_macOS12_iOS15"
 	SOURCE_DIR "${METAL_CPP_SOURCE_DIR}"
 	CONFIGURE_COMMAND ""
 	BUILD_COMMAND ""

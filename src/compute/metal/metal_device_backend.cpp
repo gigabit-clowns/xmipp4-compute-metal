@@ -34,7 +34,9 @@
 #include <xmipp4/core/compute/device_manager.hpp>
 
 #include <numeric>
+#include <sys/utsname.h>
 #include <sstream>
+#include <string>
 #include <iomanip>
 #include <cstdlib>
 
@@ -45,17 +47,26 @@ namespace xmipp4
 namespace compute
 {
 
-const std::string metal_device_backend::m_name = "metal";
-
-const std::string& metal_device_backend::get_name() const noexcept
+std::string metal_device_backend::get_name() const noexcept
 {
-    return m_name;
+    return "metal";
 }
 
 version metal_device_backend::get_version() const noexcept
 {
     // Metal does not have a notion of "version"
-    return version(0,0,0);
+    // Thus, we return the version of the running Darwin kernel
+    struct utsname sys_info;
+    if (uname(&sys_info) == 0)
+    {
+        std::string release = sys_info.release;
+        std::istringstream iss(release);
+        int major, minor, patch;
+        char dot;
+        iss >> major >> dot >> minor >> dot >> patch;
+        return version(major, minor, patch);
+    }
+    return version(0, 0, 0);
 }
 
 bool metal_device_backend::is_available() const noexcept
@@ -63,6 +74,11 @@ bool metal_device_backend::is_available() const noexcept
     NS::Array * devs = MTL::CopyAllDevices();
     const int count = devs->count();
     return count > 0;
+}
+
+backend_priority metal_device_backend::get_priority() const noexcept
+{
+    return backend_priority::normal;
 }
 
 void metal_device_backend::enumerate_devices(std::vector<std::size_t> &ids) const
@@ -120,7 +136,7 @@ bool metal_device_backend::get_device_properties(std::size_t id,
 }
 
 std::unique_ptr<device> 
-metal_device_backend::create_device(std::size_t id)
+metal_device_backend::create_device(std::size_t id, const device_create_parameters &)
 {
     const NS::Array * devs = MTL::CopyAllDevices();
     int count = devs->count();
@@ -134,7 +150,7 @@ metal_device_backend::create_device(std::size_t id)
 }
 
 std::shared_ptr<device> 
-metal_device_backend::create_device_shared(std::size_t id)
+metal_device_backend::create_device_shared(std::size_t id, const device_create_parameters &)
 {
     const NS::Array * devs = MTL::CopyAllDevices();
     int count = devs->count();
