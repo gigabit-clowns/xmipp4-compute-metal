@@ -49,13 +49,13 @@ namespace compute
 
 std::string metal_device_backend::get_name() const noexcept
 {
-    return "metal";
+    return "Metal - Darwin";
 }
 
 version metal_device_backend::get_version() const noexcept
 {
     // Metal does not have a notion of "version"
-    // Thus, we return the version of the running Darwin kernel
+    // Thus, we return the version of the running Darwin
     struct utsname sys_info;
     if (uname(&sys_info) == 0)
     {
