@@ -18,6 +18,9 @@ source:
   path: ../
 
 requirements:
+  run:
+    - xmipp4-core=0.1
+
   host:
     - python
     - pip
