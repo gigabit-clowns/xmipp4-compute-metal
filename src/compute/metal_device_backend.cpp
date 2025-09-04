@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
-#include "metal_device_backend.hpp"
+#include <xmipp4/metal/compute/metal_device_backend.hpp>
 
-//#include "metal_device.hpp"
+#include <xmipp4/metal/compute/metal_error.hpp>
+#include <xmipp4/metal/compute/metal_device.hpp>
 
 #include <xmipp4/core/compute/device_manager.hpp>
 
