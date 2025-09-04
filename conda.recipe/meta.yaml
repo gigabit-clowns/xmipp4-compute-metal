@@ -3,6 +3,9 @@
 # File based on:
 # https://github.com/pybind/cmake_example/blob/master/conda.recipe/meta.yaml
 
+{% set version_match = load_file_regex(load_file="VERSION", regex_pattern='(\\d+\\.\\d+\\.\\d+)') %}
+{% set version = version_match[1] %}
+
 package:
   name: xmipp4-compute-metal
   version: "0.1.0"
