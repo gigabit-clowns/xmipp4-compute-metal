@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 #pragma once
+
 #include <Metal/Metal.hpp>
 #include <Foundation/Foundation.h>
 #include <stdexcept>
