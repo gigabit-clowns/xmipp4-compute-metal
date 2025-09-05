@@ -29,8 +29,8 @@ class metal_error
  * @param line Line where the error ocurred.
  * 
  */
-void metal_check(NS::Error* error, 
-                const char* expr, 
+void metal_check(NS::Error* code, 
+                const char* call, 
                 const char* file,
                 int line );
 
