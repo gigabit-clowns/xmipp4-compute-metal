@@ -60,11 +60,27 @@ void metal_device_backend::enumerate_devices(std::vector<std::size_t> &ids) cons
     NS::Array * devs = MTL::CopyAllDevices();
     const int count = devs->count();
     
-    ids.resize(count);
-    std::iota(
-        ids.begin(), ids.end(),
-        static_cast<std::size_t>(0)
-    );
+    ids.clear();
+    ids.reserve(static_cast<std::size_t>(count));
+    // In Metal, devices do not have an index, and are identified
+    // either by their capabilities or by their unique system ID.
+    // In CUDA 0..N will work, not here!
+    for (int i = 0; i < count; ++i)
+    {
+        auto dev = static_cast<MTL::Device *>(devs->object(i));
+        if (dev)
+        {
+            // registryID() is a 64-bit identifier; convert to size_t for your vector
+            uint64_t reg = dev->registryID();
+            ids.push_back(static_cast<std::size_t>(reg));
+        }
+        else
+        {
+            printf("Warning: encountered null device at index %d\n", i);
+            ids.push_back(static_cast<std::size_t>(i));
+        }
+    }
+
 }
 
 bool metal_device_backend::get_device_properties(std::size_t id, 
@@ -109,7 +125,7 @@ bool metal_device_backend::get_device_properties(std::size_t id,
     return result;
 }
 
-std::unique_ptr<device> 
+std::unique_ptr<device>
 metal_device_backend::create_device(std::size_t id, const device_create_parameters &)
 {
     const NS::Array * devs = MTL::CopyAllDevices();
