@@ -4,6 +4,7 @@
 
 #include <xmipp4/metal/compute/metal_device_queue.hpp>
 #include <xmipp4/metal/compute/metal_error.hpp>
+#include <xmipp4/metal/compute/metal_device_backend.hpp>
 //#include <xmipp4/metal/compute/cuda_device_memory_allocator.hpp>
 //#include <xmipp4/metal/compute/cuda_host_memory_allocator.hpp>
 //#include <xmipp4/metal/compute/cuda_device_to_host_transfer.hpp>
@@ -23,19 +24,10 @@ namespace compute
 {
 
 metal_device::metal_device(int device, const device_create_parameters &params)
-    : m_device(nullptr)
-    , m_queue_pool(nullptr, 0)
+    : m_device(metal_device_backend::get_metal_device_handle(device))
+    , m_index(device)
+    , m_queue_pool(device, params.get_desired_queue_count())
 {
-    if (device != 0) 
-    {
-        throw std::runtime_error("Metal backend: only device 0 is supported on Apple Silicon.");
-    } 
-    else 
-    {
-        m_device = MTL::CreateSystemDefaultDevice();
-        m_queue_pool = metal_device_queue_pool(device, params.get_desired_queue_count());
-    }
-
 }
 
 int metal_device::get_index() const noexcept
