@@ -18,7 +18,7 @@ class metal_device final
     : public device
 {
   public:
-    metal_device(MTL::Device id, const device_create_parameters &params);
+    metal_device(int device, const device_create_parameters &params);
     metal_device(const metal_device &other) = delete;
     metal_device(metal_device &&other) = default;
     ~metal_device() override = default;
@@ -27,8 +27,9 @@ class metal_device final
     metal_device& operator=(metal_device &&other) = default;
 
     int get_index() const noexcept;
+    MTL::Device * get_device_handle() const noexcept;
 
-    //metal_device_queue_pool& get_queue_pool() override;
+    metal_device_queue_pool& get_queue_pool() override;
 
     std::shared_ptr<device_memory_allocator>
     create_device_memory_allocator() override;
@@ -52,8 +53,8 @@ class metal_device final
     create_device_to_host_event() override;
 
     private:
-        MTL::Device m_device;
-        //metal_device_queue_pool m_queue_pool;
+        MTL::Device * m_device;
+        metal_device_queue_pool m_queue_pool;
 
 };
 
