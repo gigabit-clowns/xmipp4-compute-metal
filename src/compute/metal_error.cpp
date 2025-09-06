@@ -9,17 +9,17 @@ namespace xmipp4
 namespace compute 
 {
 
-void metal_check(NS::Error* code, 
+void metal_check(NS::Error* error, 
                 const char* call, 
                 const char* file,
                 int line)
 {
-    if (code) 
+    if (error) 
     {
         std::ostringstream oss;
         oss << "A METAL Runtime Error has occured: " << call << "\n"
             << " File: " << file << ":" << line << "\n"
-            << " Reason: " << code->localizedDescription()->utf8String() 
+            << " Reason: " << error->localizedDescription()->utf8String() 
             << std::endl;
         std::abort();
         throw metal_error(oss.str());
