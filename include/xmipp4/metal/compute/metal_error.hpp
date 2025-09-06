@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <Metal/Metal.hpp>
-#include <Foundation/Foundation.h>
 #include <stdexcept>
 
 namespace xmipp4 
