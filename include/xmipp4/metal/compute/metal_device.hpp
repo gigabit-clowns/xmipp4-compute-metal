@@ -54,6 +54,7 @@ class metal_device final
 
     private:
         MTL::Device * m_device;
+        int m_index;
         metal_device_queue_pool m_queue_pool;
 
 };
