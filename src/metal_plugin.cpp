@@ -2,7 +2,7 @@
 
 #include "metal_plugin.hpp"
 
-#include "xmipp4/metal/compute/metal_device_backend.hpp"
+#include <xmipp4/metal/compute/metal_device_backend.hpp>
 
 #include <xmipp4/core/interface_catalog.hpp>
 #include <xmipp4/core/compute/device_manager.hpp>
@@ -29,7 +29,7 @@ version metal_plugin::get_version() const noexcept
 void metal_plugin::register_at(interface_catalog& catalog) const
 {
     compute::metal_device_backend::register_at(
-        catalog.get_interface_manager<compute::device_manager>()
+        catalog.get_backend_manager<compute::device_manager>()
     );
 }
 
