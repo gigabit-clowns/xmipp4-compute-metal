@@ -47,7 +47,7 @@ bool metal_device_backend::is_available() const noexcept
 {
     NS::Array * devs = MTL::CopyAllDevices();
     const int count = devs->count();
-    return count > 0;
+    return (count > 0);
 }
 
 backend_priority metal_device_backend::get_priority() const noexcept
@@ -74,76 +74,68 @@ void metal_device_backend::enumerate_devices(std::vector<std::size_t> &ids) cons
 bool metal_device_backend::get_device_properties(std::size_t id, 
                                                 device_properties &desc ) const
 {
-    NS::Array * devs = MTL::CopyAllDevices();
-    const int count = devs->count();
-    const auto device = static_cast<int>(id);
-    const auto result = device < count;
+    MTL::Device * dev = XMIPP4_METAL_CHECK(get_metal_device_handle(id));
+    device_type type;
+    std::string location;
 
-    if (result)
-    {
-        MTL::Device * dev = static_cast<MTL::Device *>(devs->object(0));
-
-        device_type type;
-        std::string location;
-        switch (dev->location()) {
-            case MTL::DeviceLocationBuiltIn:
-                type = device_type::integrated_gpu;
-                location = "Apple Silicon, Intel Iris or Discrete laptop GPU";
-                break;
-            case MTL::DeviceLocationSlot:
-                type = device_type::gpu;
-                location = std::to_string(dev->locationNumber());
-                break;
-            case MTL::DeviceLocationExternal:
-                type = device_type::gpu;
-                location = "External Enclosure";
-                break;
-            default:
-                type = device_type::unknown;
-                location = "Unspecified location";
-                break;
-        }
-        // Write
-        desc.set_name(dev->name()->cString(NS::StringEncoding::UTF8StringEncoding));
-        desc.set_physical_location(std::move(location));
-        desc.set_type(type);
-        desc.set_total_memory_bytes(dev->recommendedMaxWorkingSetSize());
+    switch (dev->location()) {
+        case MTL::DeviceLocationBuiltIn:
+            type = device_type::integrated_gpu;
+            location = "Apple Silicon, Intel Iris or Discrete laptop GPU";
+            break;
+        case MTL::DeviceLocationSlot:
+            type = device_type::gpu;
+            location = std::to_string(dev->locationNumber());
+            break;
+        case MTL::DeviceLocationExternal:
+            type = device_type::gpu;
+            location = "External Enclosure";
+            break;
+        default:
+            type = device_type::unknown;
+            location = "Unspecified location";
+            break;
     }
 
-    return result;
-}
+    // Write
+    desc.set_name(dev->name()->cString(NS::StringEncoding::UTF8StringEncoding));
+    desc.set_physical_location(std::move(location));
+    desc.set_type(type);
+    desc.set_total_memory_bytes(dev->recommendedMaxWorkingSetSize());
 
-std::unique_ptr<device>
-metal_device_backend::create_device(std::size_t id, const device_create_parameters &)
-{
-    const NS::Array * devs = MTL::CopyAllDevices();
-    int count = devs->count();
-    if (static_cast<int>(id) >= count)
-    {
-        throw std::invalid_argument("Invalid device id");
-    }
-
-    //return std::make_unique<metal_device>(id);
-    return nullptr;
+    return (dev != nullptr);
 }
 
 std::shared_ptr<device> 
-metal_device_backend::create_device_shared(std::size_t id, const device_create_parameters &)
+metal_device_backend::create_device(std::size_t id, 
+                                           const device_create_parameters &params)
 {
-    const NS::Array * devs = MTL::CopyAllDevices();
-    int count = devs->count();
-    if (static_cast<int>(id) >= count)
-    {
-        throw std::invalid_argument("Invalid device id");
-    }
+    MTL::Device * dev = XMIPP4_METAL_CHECK(get_metal_device_handle(id));
 
-    //return std::make_shared<metal_device>(id);
-    return nullptr;
+    return std::make_shared<metal_device>(id, params);
 }
 
 bool metal_device_backend::register_at(device_manager &manager)
 {
     return manager.register_backend(std::make_unique<metal_device_backend>());
+}
+
+static MTL::Device * get_metal_device_handle(std::size_t id)
+{
+    NS::Array * devs = MTL::CopyAllDevices();
+    const int dev = static_cast<int>(id);
+    const int count = static_cast<int>(devs->count());
+    if (dev < count)
+    { // OK
+        return static_cast<MTL::Device *>(devs->object(dev));
+    }
+    else
+    { // Amiga, la cagaste
+        std::ostringstream oss;
+        oss << "METAL error: device " << dev << "is out of bounds.\n" 
+        << std::endl;
+        throw metal_error(oss.str());
+    }
 }
 
 } // namespace compute

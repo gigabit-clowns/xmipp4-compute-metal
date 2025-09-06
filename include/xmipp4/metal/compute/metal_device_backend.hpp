@@ -30,6 +30,8 @@ public:
 
     static bool register_at(device_manager &manager);
 
+    static MTL::Device * get_metal_device_handle(std::size_t id);
+
 }; 
 
 } // namespace compute
