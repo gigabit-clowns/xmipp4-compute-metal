@@ -5,6 +5,9 @@
 #include <xmipp4/core/compute/device_backend.hpp>
 #include <xmipp4/core/compute/device_create_parameters.hpp>
 
+#include <Foundation/Foundation.hpp>
+#include <Metal/Metal.hpp>
+
 namespace xmipp4 
 {
 namespace compute
@@ -30,7 +33,7 @@ public:
 
     static bool register_at(device_manager &manager);
 
-    static MTL::Device * get_metal_device_handle(std::size_t id);
+    static NS::SharedPtr<MTL::Device> get_metal_device_handle(std::size_t id);
 
 }; 
 
