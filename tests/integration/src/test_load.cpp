@@ -11,10 +11,10 @@ using namespace xmipp4;
 
 static std::string get_metal_plugin_path()
 {
-    #if XMIPP4_WINDOWS
-        #error "Unsupported platform: Windows";
-    #elif XMIPP4_APPLE || XMIPP4_LINUX
-        return "./libxmipp4-compute-metal.so";
+    #if XMIPP4_WINDOWS || XMIPP4_LINUX
+        #error "Windows and Linux are not supported in compute-metal.";
+    #elif XMIPP4_APPLE
+        return "./libxmipp4-compute-metal.dylib";
     #else
         #error "Unknown platform"
     #endif
