@@ -37,18 +37,16 @@ void metal_check(NS::Error* error,
 
 /**
  * @brief Calls metal_check filling the call name, filename and line number.
- * 
+ * This should not be used with void-returning functions: release, retain, autorelease
+ * buffer commits, etc
  */
-#define XMIPP4_METAL_CHECK(expr)                                    \
-    do {                                                            \
-        NS::Error* _mtl_err = nullptr;                              \
-        auto _mtl_res = (expr);                                     \
-        /* Case A: expr returns a NS::ERrror** (library, etc) */    \
-        metal_check(_mtl_err, #expr, __FILE__, __LINE__);           \
-        /* Case B: no returns (release, retain, autorelease etc) */ \
-        (void)_mtl_res;                                             \
-    } while (0)
-
+#define XMIPP4_METAL_CHECK(expr) \
+    ([&]() -> decltype(expr) { \
+        NS::Error* _mtl_err = nullptr; \
+        auto _mtl_res = (expr); \
+        metal_check(_mtl_err, #expr, __FILE__, __LINE__); \
+        return _mtl_res; \
+    }())
 
 } // namespace compute
 } // namespace xmipp4
