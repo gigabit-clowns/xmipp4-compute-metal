@@ -23,7 +23,7 @@ namespace compute
 
 std::string metal_device_backend::get_name() const noexcept
 {
-    return "Metal - Darwin";
+    return "Apple Metal on Darwin";
 }
 
 version metal_device_backend::get_version() const noexcept
@@ -61,26 +61,14 @@ void metal_device_backend::enumerate_devices(std::vector<std::size_t> &ids) cons
     const int count = devs->count();
     
     ids.clear();
-    ids.reserve(static_cast<std::size_t>(count));
-    // In Metal, devices do not have an index, and are identified
-    // either by their capabilities or by their unique system ID.
-    // In CUDA 0..N will work, not here!
-    for (int i = 0; i < count; ++i)
-    {
-        auto dev = static_cast<MTL::Device *>(devs->object(i));
-        if (dev)
-        {
-            // registryID() is a 64-bit identifier; convert to size_t for your vector
-            uint64_t reg = dev->registryID();
-            ids.push_back(static_cast<std::size_t>(reg));
-        }
-        else
-        {
-            printf("Warning: encountered null device at index %d\n", i);
-            ids.push_back(static_cast<std::size_t>(i));
-        }
-    }
-
+    ids.resize(static_cast<std::size_t>(count));
+    // In Metal, devices do not have an index
+    // We take CopyAllDevices order as invariant
+    // Apple Silicon -> Only [0] will exist!    
+    std::iota(
+        ids.begin(), ids.end(),
+        static_cast<std::size_t>(0)
+    );
 }
 
 bool metal_device_backend::get_device_properties(std::size_t id, 
