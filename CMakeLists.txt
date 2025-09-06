@@ -10,8 +10,8 @@ endif()
 # Exit if OS too old for Metal-CPP
 # Oldest supported version is MacOS12
 message("Running on Darwin ${CMAKE_HOST_SYSTEM_VERSION}")
-if (CMAKE_HOST_SYSTEM_VERSION LESS 21)
-	message(FATAL_ERROR "Your version is lesser than 12 - Monterey. Cmake will exit.")
+if (CMAKE_HOST_SYSTEM_VERSION LESS 24)
+	message(FATAL_ERROR "Your version is lesser than 15 - Sequoia. Cmake will exit.")
 endif()
 
 # Define the project
@@ -54,7 +54,7 @@ set(METAL_CPP_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/metal-cpp")
 FetchContent_Declare(
 	"METAL_CPP"
 	GIT_REPOSITORY "https://github.com/bkaradzic/metal-cpp.git"
-	GIT_TAG "metal-cpp_macOS12_iOS15"
+	GIT_TAG "metal-cpp_macOS15.2_iOS18.2"
 	SOURCE_DIR "${METAL_CPP_SOURCE_DIR}"
 )
 FetchContent_MakeAvailable("METAL_CPP")
