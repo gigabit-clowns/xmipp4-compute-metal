@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include <xmipp4/core/compute/device.hpp>
+#include <xmipp4/core/hardware/device.hpp>
 
 #include <Foundation/Foundation.hpp>
 #include <Metal/Metal.hpp>
 
 namespace xmipp4
 {
-namespace compute
+namespace hardware
 {
 
 class device_create_parameters;
@@ -56,5 +56,5 @@ class metal_device final
 
 };
 
-} // namespace compute
+} // namespace hardware
 } // namespace xmipp4

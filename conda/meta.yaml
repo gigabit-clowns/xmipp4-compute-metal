@@ -7,11 +7,11 @@
 {% set version = version_match[1] %}
 
 package:
-  name: xmipp4-compute-metal
+  name: xmipp4-hardware-metal
   version: "0.1.0"
 
 about:
-  summary: Apple Metal compute library for xmipp4
+  summary: Apple Metal hardware library for xmipp4
   license_file: LICENSE
 
 source:

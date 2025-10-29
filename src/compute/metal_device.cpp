@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
-#include <xmipp4/metal/compute/metal_device.hpp>
+#include <xmipp4/metal/hardware/metal_device.hpp>
 
-#include <xmipp4/core/compute/device_create_parameters.hpp>
+#include <xmipp4/core/hardware/device_create_parameters.hpp>
 
 #include <memory>
 #include <sstream>
 
 namespace xmipp4
 {
-namespace compute
+namespace hardware
 {
 
 metal_device::metal_device(NS::SharedPtr<MTL::Device> device, const device_create_parameters &params)
@@ -26,5 +26,5 @@ metal_device::metal_device(NS::SharedPtr<MTL::Device> device, const device_creat
 //      metal_device_memory_allocator
 //      todo lo demas xd
 
-} // namespace compute
+} // namespace hardware
 } // namespace xmipp4

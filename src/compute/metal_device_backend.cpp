@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
-#include <xmipp4/metal/compute/metal_device_backend.hpp>
+#include <xmipp4/metal/hardware/metal_device_backend.hpp>
 
-#include <xmipp4/metal/compute/metal_device.hpp>
+#include <xmipp4/metal/hardware/metal_device.hpp>
 
-#include <xmipp4/core/compute/device_manager.hpp>
+#include <xmipp4/core/hardware/device_manager.hpp>
 
 #include <cstdlib>
 #include <iomanip>
@@ -15,7 +15,7 @@
 
 namespace xmipp4
 {
-namespace compute
+namespace hardware
 {
 
 std::string metal_device_backend::get_name() const noexcept
@@ -139,5 +139,5 @@ metal_device_backend::get_metal_device_handle(std::size_t id)
 	}
 }
 
-} // namespace compute
+} // namespace hardware
 } // namespace xmipp4

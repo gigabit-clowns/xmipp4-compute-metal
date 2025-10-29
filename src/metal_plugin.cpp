@@ -2,15 +2,15 @@
 
 #include "metal_plugin.hpp"
 
-#include <xmipp4/metal/compute/metal_device_backend.hpp>
+#include <xmipp4/metal/hardware/metal_device_backend.hpp>
 
 #include <xmipp4/core/interface_catalog.hpp>
-#include <xmipp4/core/compute/device_manager.hpp>
+#include <xmipp4/core/hardware/device_manager.hpp>
 
 namespace xmipp4 
 {
 
-const std::string metal_plugin::name = "xmipp4-compute-metal";
+const std::string metal_plugin::name = "xmipp4-hardware-metal";
 
 const std::string& metal_plugin::get_name() const noexcept
 {
@@ -28,8 +28,8 @@ version metal_plugin::get_version() const noexcept
 
 void metal_plugin::register_at(interface_catalog& catalog) const
 {
-    compute::metal_device_backend::register_at(
-        catalog.get_backend_manager<compute::device_manager>()
+    hardware::metal_device_backend::register_at(
+        catalog.get_backend_manager<hardware::device_manager>()
     );
 }
 
