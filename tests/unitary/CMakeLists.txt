@@ -30,7 +30,6 @@ target_link_libraries(
 		trompeloeil::trompeloeil
 )
 
-
 # Discover tests
 catch_discover_tests(${TESTS_NAME})
 
