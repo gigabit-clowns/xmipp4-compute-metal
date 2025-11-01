@@ -41,13 +41,13 @@ static std::string get_metal_plugin_path()
     #if XMIPP4_WINDOWS
         #error "Unsupported platform: Windows";
     #elif XMIPP4_APPLE || XMIPP4_LINUX
-        return "./libxmipp4-compute-metal.so";
+        return "./libxmipp4-hardware-metal.so";
     #else
         #error "Unknown platform"
     #endif
 }
 
-TEST_CASE( "load and register xmipp4-compute-metal plugin", "[compute-metal]" ) 
+TEST_CASE( "load and register xmipp4-hardware-metal plugin", "[hardware-metal]" ) 
 {
     plugin_manager manager;
 
@@ -55,5 +55,5 @@ TEST_CASE( "load and register xmipp4-compute-metal plugin", "[compute-metal]" )
         manager.load_plugin(get_metal_plugin_path());
 
     REQUIRE( metal_plugin != nullptr );
-    REQUIRE( metal_plugin->get_name() == "xmipp4-compute-metal" );
+    REQUIRE( metal_plugin->get_name() == "xmipp4-hardware-metal" );
 }

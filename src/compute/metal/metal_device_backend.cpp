@@ -31,7 +31,7 @@
 
 #include "metal_device.hpp"
 
-#include <xmipp4/core/compute/device_manager.hpp>
+#include <xmipp4/core/hardware/device_manager.hpp>
 
 #include <numeric>
 #include <sstream>
@@ -44,7 +44,7 @@
 
 namespace xmipp4
 {
-namespace compute
+namespace hardware
 {
 
 const std::string metal_device_backend::m_name = "metal";
@@ -148,5 +148,5 @@ bool metal_device_backend::register_at(device_manager &manager)
     return manager.register_backend(std::make_unique<metal_device_backend>());
 }
 
-} // namespace compute
+} // namespace hardware
 } // namespace xmipp4

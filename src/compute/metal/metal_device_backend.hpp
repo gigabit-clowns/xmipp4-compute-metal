@@ -29,7 +29,7 @@
  * 
  */
 
-#include <xmipp4/core/compute/device_backend.hpp>
+#include <xmipp4/core/hardware/device_backend.hpp>
 #define NS_PRIVATE_IMPLEMENTATION
 #define CA_PRIVATE_IMPLEMENTATION
 #define MTL_PRIVATE_IMPLEMENTATION
@@ -39,7 +39,7 @@
 
 namespace xmipp4 
 {
-namespace compute
+namespace hardware
 {
 
 class device_manager;
@@ -67,5 +67,5 @@ private:
 
 }; 
 
-} // namespace compute
+} // namespace hardware
 } // namespace xmipp4
