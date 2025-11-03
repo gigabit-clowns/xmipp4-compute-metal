@@ -12,18 +12,54 @@ namespace xmipp4
 namespace hardware
 {
 
-metal_device::metal_device(NS::SharedPtr<MTL::Device> device, const device_create_parameters &params)
+metal_device::metal_device(NS::SharedPtr<MTL::Device> device)
     : m_device(std::move(device))
 {
 }
 
+NS::SharedPtr<MTL::Device> metal_device::get_device_handle() const noexcept
+{
+    return m_device;
+}
+
+void metal_device::enumerate_memory_resources(
+    std::vector<memory_resource*> &resources
+)
+{
+    return; // TODO
+}
+
+bool metal_device::can_access_memory_resource(
+  const memory_resource &resource
+) const
+{
+    return false; // TODO
+}
+
+std::shared_ptr<device_queue>
+metal_device::create_device_queue()
+{
+    return nullptr; // TODO
+    //return std::make_shared<metal_device_queue>(*this);
+}
+
+std::shared_ptr<device_event> metal_device::create_device_event()
+{
+    return nullptr; // TODO
+    //return std::make_shared<metal_event>();
+}
+
+std::shared_ptr<device_to_host_event>
+metal_device::create_device_to_host_event()
+{
+    return nullptr; // TODO
+    //return std::make_shared<metal_event>();
+} 
+
+
 // TODO: Come back when this is done:
-//      metal_device_to_host_transfer
-//      metal_host_to_device_transfer
 //      metal_event
-//      metal_device_copy
-//      metal_host_memory_allocator
-//      metal_device_memory_allocator
+//      metal_device_queue
 //      todo lo demas xd
 
 } // namespace hardware

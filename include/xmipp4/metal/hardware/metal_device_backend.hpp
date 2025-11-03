@@ -28,8 +28,7 @@ public:
     bool get_device_properties(std::size_t id, device_properties &desc) const override;
 
     std::shared_ptr<device> 
-    create_device(std::size_t id, 
-                    const device_create_parameters &params) override;
+    create_device(std::size_t id) override;
 
     static bool register_at(device_manager &manager);
 

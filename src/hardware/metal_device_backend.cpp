@@ -106,8 +106,7 @@ bool metal_device_backend::get_device_properties(std::size_t id,
 }
 
 std::shared_ptr<device> 
-metal_device_backend::create_device(std::size_t id, 
-									const device_create_parameters &params)
+metal_device_backend::create_device(std::size_t id)
 {
 	NS::SharedPtr<MTL::Device> dev = get_metal_device_handle(id);
 
@@ -115,7 +114,7 @@ metal_device_backend::create_device(std::size_t id,
 		throw std::invalid_argument("Requested device ID is invalid.");
 	}
 	
-	return std::make_shared<metal_device>(dev, params);
+	return std::make_shared<metal_device>(dev);
 }
 
 bool metal_device_backend::register_at(device_manager &manager)
