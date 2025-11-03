@@ -2,7 +2,7 @@
 
 #include <xmipp4/metal/hardware/metal_device.hpp>
 
-#include <xmipp4/core/hardware/device_create_parameters.hpp>
+#include <xmipp4/core/hardware/device.hpp>
 
 #include <memory>
 #include <sstream>

@@ -3,7 +3,7 @@
 #pragma once
 
 #include <xmipp4/core/hardware/device_backend.hpp>
-#include <xmipp4/core/hardware/device_create_parameters.hpp>
+#include <xmipp4/core/hardware/device.hpp>
 
 #include <Foundation/Foundation.hpp>
 #include <Metal/Metal.hpp>
