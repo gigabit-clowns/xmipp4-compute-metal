@@ -14,7 +14,7 @@ public:
     metal_plugin() = default;
     metal_plugin(const metal_plugin& other) = default;
     metal_plugin(metal_plugin&& other) = default;
-    virtual ~metal_plugin() = default;
+    ~metal_plugin() override = default;
 
     metal_plugin& operator=(const metal_plugin& other) = default;
     metal_plugin& operator=(metal_plugin&& other) = default;

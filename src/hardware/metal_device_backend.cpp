@@ -32,8 +32,11 @@ version metal_device_backend::get_version() const noexcept
 	{
 		std::string release = sys_info.release;
 		std::istringstream iss(release);
-		int major, minor, patch;
+		int major;
+		int minor; 
+		int patch;
 		char dot;
+		
 		iss >> major >> dot >> minor >> dot >> patch;
 		return version(major, minor, patch);
 	}
@@ -126,8 +129,8 @@ NS::SharedPtr<MTL::Device>
 metal_device_backend::get_metal_device_handle(std::size_t id)
 {
 	NS::SharedPtr<NS::Array> devs = NS::TransferPtr(MTL::CopyAllDevices());
-	const int index = static_cast<int>(id);
-	const int count = static_cast<int>(devs->count());
+	const auto index = static_cast<int>(id);
+	const auto count = static_cast<int>(devs->count());
 	if (index < count)
 	{ // OK
 		return NS::TransferPtr(static_cast<MTL::Device *>(devs->object(index)));
