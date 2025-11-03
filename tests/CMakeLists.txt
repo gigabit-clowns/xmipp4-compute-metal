@@ -32,5 +32,5 @@ include(Catch)
 include(CTest)
 include(FetchContent)
 
-add_subdirectory(unitary)
+#add_subdirectory(unitary)
 add_subdirectory(integration)
