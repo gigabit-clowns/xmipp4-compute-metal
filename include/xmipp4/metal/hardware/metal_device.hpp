@@ -18,7 +18,7 @@ class metal_device final
     : public device
 {
   public:
-    metal_device(NS::SharedPtr<MTL::Device> device);
+    explicit metal_device(NS::SharedPtr<MTL::Device> device);
     metal_device(const metal_device &other) = delete;
     metal_device(metal_device &&other) = default;
     ~metal_device() override = default;
