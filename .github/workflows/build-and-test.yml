@@ -11,9 +11,7 @@ jobs:
     strategy:
       matrix:
         os:
-        - macos-15 # ARM
-        - macos-14 # ARM
-        - macos-13-large # ARM
+        - macos-latest # ARM
         compiler: 
         - {cc: gcc, cxx: g++}
         - {cc: clang, cxx: clang++}
