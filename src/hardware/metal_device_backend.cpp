@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
-#include <xmipp4/metal/hardware/metal_device_backend.hpp>
+#include "metal_device_backend.hpp"
 
 #include <xmipp4/metal/hardware/metal_device.hpp>
 
@@ -18,12 +18,12 @@ namespace xmipp4
 namespace hardware
 {
 
-std::string metal_device_backend::get_name() const noexcept
+std::string metal_device_backend::get_name() const
 {
 	return "metal";
 }
 
-version metal_device_backend::get_version() const noexcept
+version metal_device_backend::get_version() const
 {
 	// Metal does not have a notion of "version"
 	// Thus, we return the version of the running Darwin
@@ -41,18 +41,6 @@ version metal_device_backend::get_version() const noexcept
 		return version(major, minor, patch);
 	}
 	return version(0, 0, 0);
-}
-
-bool metal_device_backend::is_available() const noexcept
-{
-	NS::SharedPtr<NS::Array> devs = NS::TransferPtr(MTL::CopyAllDevices());
-	const int count = devs->count();
-	return (count > 0);
-}
-
-backend_priority metal_device_backend::get_priority() const noexcept
-{
-	return backend_priority::normal;
 }
 
 void metal_device_backend::enumerate_devices(std::vector<std::size_t> &ids) const

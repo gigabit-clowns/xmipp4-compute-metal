@@ -2,7 +2,7 @@
 
 #include "metal_plugin.hpp"
 
-#include <xmipp4/metal/hardware/metal_device_backend.hpp>
+#include "hardware/metal_device_backend.hpp"
 
 #include <xmipp4/core/service_catalog.hpp>
 #include <xmipp4/core/hardware/device_manager.hpp>

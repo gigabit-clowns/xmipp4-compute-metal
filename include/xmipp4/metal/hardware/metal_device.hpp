@@ -32,10 +32,6 @@ class metal_device final
         std::vector<memory_resource*> &resources
     ) override;
 
-    bool can_access_memory_resource(
-      const memory_resource &resource
-    ) const override;
-
     std::shared_ptr<device_queue>
     create_device_queue() override;
   

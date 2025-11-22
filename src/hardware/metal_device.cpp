@@ -29,13 +29,6 @@ void metal_device::enumerate_memory_resources(
     return; // TODO
 }
 
-bool metal_device::can_access_memory_resource(
-  const memory_resource &resource
-) const
-{
-    return false; // TODO
-}
-
 std::shared_ptr<device_queue>
 metal_device::create_device_queue()
 {
