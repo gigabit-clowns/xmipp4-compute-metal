@@ -7,7 +7,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "xmipp4-hardware-metal"
-version = "0.1.0"
+dynamic = ["version"]
 authors = [
     { name = "Oier Lauzirika Zarrabeitia", email = "oierlauzi@bizkaia.eu" },
     { name = "Martín Salinas Antón", email = "ssalinasmartin@gmail.com" },
