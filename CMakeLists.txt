@@ -24,21 +24,6 @@ if(NOT TARGET xmipp4-core)
 	find_package(xmipp4-core REQUIRED)
 endif()
 
-# Get MacOS version
-execute_process(
-    COMMAND sw_vers -productVersion
-    OUTPUT_VARIABLE MACOS_VERSION
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
-# Extract major and minor version
-string(REPLACE "." ";" VERSION_LIST ${MACOS_VERSION})
-list(GET VERSION_LIST 0 MACOS_MAJOR)
-list(GET VERSION_LIST 1 MACOS_MINOR)
-
-# Construct the branch name based on MacOS version
-set(METAL_CPP_BRANCH "macos-${MACOS_MAJOR}.${MACOS_MINOR}")
-
 # Download METAL-CPP dependencies
 set(METAL_CPP_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/metal-cpp")
 FetchContent_Declare(
