@@ -11,38 +11,21 @@ project(
 	LANGUAGES C CXX
 )
 
+# Add the CMake module path
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
+
 # Include CMake packages
 include(GNUInstallDirs)
 include(CTest)
 include(FetchContent)
+include(fetch_metalcpp)
 
-# Declare build options
-option(XMIPP4_HARDWARE_METAL_LINT_CLANG_TIDY "Lint with clang-tidy" OFF)
-
-# Find xmipp4-core
+# Find dependencies
 if(NOT TARGET xmipp4-core)
 	find_package(xmipp4-core REQUIRED)
 endif()
 
-# Download METAL-CPP dependencies
-set(METAL_CPP_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/metal-cpp")
-FetchContent_Declare(
-	"METAL_CPP"
-	GIT_REPOSITORY "https://github.com/bkaradzic/metal-cpp.git"
-	GIT_TAG "metal-cpp_macOS15.2_iOS18.2"
-	SOURCE_DIR "${METAL_CPP_SOURCE_DIR}"
-)
-FetchContent_MakeAvailable("METAL_CPP")
-
-set(TARGET_NAME ${PROJECT_NAME})
-
-add_library(METAL_CPP INTERFACE IMPORTED)
-target_include_directories(METAL_CPP INTERFACE ${METAL_CPP_SOURCE_DIR})
-target_link_libraries(METAL_CPP INTERFACE
-         "-framework Metal"
-         "-framework MetalKit"
-         "-framework Foundation"
-)
+fetch_metalcpp(VERSION 26)
 
 # Find all source and header files
 file(
@@ -53,6 +36,7 @@ file(
 )
 
 # Create the shared library
+set(TARGET_NAME ${PROJECT_NAME})
 add_library(${TARGET_NAME} SHARED ${SOURCES})
 set_target_properties(
 	${TARGET_NAME} 
@@ -78,7 +62,7 @@ target_link_libraries(
 	${TARGET_NAME} 
 	PRIVATE
 		xmipp4-core
-		METAL_CPP
+		metalcpp
 )
 
 # Set up clang-tidy
