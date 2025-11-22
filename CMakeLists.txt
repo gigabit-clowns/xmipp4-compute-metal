@@ -2,18 +2,6 @@
 
 cmake_minimum_required(VERSION 3.18)
 
-# Exit if not an OSX system
-if (NOT CMAKE_HOST_APPLE)
-	message(FATAL_ERROR "This repository only compiles on MacOS, CMake will exit.")
-endif()
-
-# Exit if OS too old for Metal-CPP
-# Oldest supported version is MacOS12
-message("Running on Darwin ${CMAKE_HOST_SYSTEM_VERSION}")
-if (CMAKE_HOST_SYSTEM_VERSION LESS 24)
-	message(FATAL_ERROR "Your version is lesser than 15 - Sequoia. Cmake will exit.")
-endif()
-
 # Define the project
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION PROJECT_VERSION)
 string(STRIP "${PROJECT_VERSION}" PROJECT_VERSION)
