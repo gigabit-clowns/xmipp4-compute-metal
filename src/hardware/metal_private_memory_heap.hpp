@@ -41,6 +41,5 @@ private:
     
 };
 
-
 } // namespace hardware
 } // namespace xmipp4
