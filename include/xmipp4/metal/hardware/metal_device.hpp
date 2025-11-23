@@ -4,6 +4,8 @@
 
 #include <xmipp4/core/hardware/device.hpp>
 
+#include <xmipp4/core/hardware/memory_resource.hpp>
+
 #include <Foundation/Foundation.hpp>
 #include <Metal/Metal.hpp>
 
@@ -42,6 +44,8 @@ class metal_device final
 
   private:
       NS::SharedPtr<MTL::Device> m_device;
+      std::unique_ptr<memory_resource> m_private_memory_resource;
+      std::unique_ptr<memory_resource> m_shared_memory_resource;
 
 };
 

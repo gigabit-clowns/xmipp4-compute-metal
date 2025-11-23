@@ -71,7 +71,7 @@ bool metal_device_backend::get_device_properties(std::size_t id,
 		switch (dev->location()) {
 			case MTL::DeviceLocationBuiltIn:
 				type = device_type::integrated_gpu;
-				location = "Apple Silicon, Intel Iris or Discrete laptop GPU";
+				location = "SoC Built-in GPU";
 				break;
 			case MTL::DeviceLocationSlot:
 				type = device_type::gpu;

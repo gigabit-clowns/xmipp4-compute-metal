@@ -2,7 +2,8 @@
 
 #include <xmipp4/metal/hardware/metal_device.hpp>
 
-#include <xmipp4/core/hardware/device.hpp>
+#include "metal_private_memory_resource.hpp"
+#include "metal_shared_memory_resource.hpp"
 
 #include <memory>
 #include <sstream>
@@ -14,6 +15,8 @@ namespace hardware
 
 metal_device::metal_device(NS::SharedPtr<MTL::Device> device)
     : m_device(std::move(device))
+    , m_private_memory_resource(std::make_unique<metal_private_memory_resource>(*this))
+    , m_shared_memory_resource(std::make_unique<metal_shared_memory_resource>(*this))
 {
 }
 
@@ -26,7 +29,10 @@ void metal_device::enumerate_memory_resources(
     std::vector<memory_resource*> &resources
 )
 {
-    return; // TODO
+    resources = {
+        m_private_memory_resource.get(),
+        m_shared_memory_resource.get()
+    };
 }
 
 std::shared_ptr<device_queue>
@@ -48,7 +54,6 @@ metal_device::create_device_to_host_event()
     return nullptr; // TODO
     //return std::make_shared<metal_event>();
 } 
-
 
 // TODO: Come back when this is done:
 //      metal_event

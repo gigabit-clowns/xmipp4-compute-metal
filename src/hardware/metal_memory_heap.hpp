@@ -4,6 +4,8 @@
 
 #include <xmipp4/core/hardware/memory_heap.hpp>
 
+#include "metal_memory_resource.hpp"
+
 #include <utility>
 
 #include <Foundation/Foundation.hpp>
@@ -14,17 +16,16 @@ namespace xmipp4
 namespace hardware
 {
 
-class metal_private_memory_resource;
-
-class metal_private_memory_heap final
+class metal_memory_heap final
     : public memory_heap
 {
 public:
-    metal_private_memory_heap(
-        metal_private_memory_resource &resource,
+    metal_memory_heap(
+        metal_memory_resource &resource,
+        MTL::ResourceOptions resource_options,
         std::size_t size
     );
-    ~metal_private_memory_heap() override;
+    ~metal_memory_heap() override = default;
 
     std::size_t get_size() const noexcept override;
 
@@ -35,9 +36,8 @@ public:
     ) override;
 
 private:
-    std::reference_wrapper<metal_private_memory_resource> m_resource;
+    std::reference_wrapper<metal_memory_resource> m_resource;
     NS::SharedPtr<MTL::Heap> m_heap;
-    std::size_t m_size;
     
 };
 

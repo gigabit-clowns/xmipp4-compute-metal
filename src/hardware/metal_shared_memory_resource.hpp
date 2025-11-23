@@ -9,12 +9,12 @@ namespace xmipp4
 namespace hardware
 {
 
-class metal_private_memory_resource final
+class metal_shared_memory_resource final
     : public metal_memory_resource
 {
 public:
-    explicit metal_private_memory_resource(metal_device &device) noexcept;
-    ~metal_private_memory_resource() override = default;
+    explicit metal_shared_memory_resource(metal_device &device) noexcept;
+    ~metal_shared_memory_resource() override = default;
 
     memory_resource_kind get_kind() const noexcept override;
 
@@ -22,7 +22,7 @@ public:
         std::size_t size, 
         std::size_t alignment
     ) override;
-
+    
 };
 
 } // namespace xmipp4
