@@ -47,7 +47,8 @@ void metal_device_queue::reset() noexcept
 {
     if (m_command_queue)
     {
-        XMIPP4_METAL_CHECK( m_command_queue->release() );
+        XMIPP4_METAL_CHECK( m_command_queue );
+        m_command_queue->release();
         m_command_queue = nullptr;
     }
 }
