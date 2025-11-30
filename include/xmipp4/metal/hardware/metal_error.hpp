@@ -30,19 +30,23 @@ class metal_error
  * Metal does not return error codes, so we treat `nullptr` as failure.
  */
 XMIPP4_HARDWARE_METAL_API
+template<typename T>
 inline void metal_check_not_null(
-    const void* ptr,
+    T ptr,
     const char* call,
     const char* file,
     int line)
 {
     if (!ptr)
     {
-        char buf[1024];
-        snprintf(buf, sizeof(buf),
-                 "Metal error: call '%s' returned null (%s:%d)",
-                 call, file, line);
-        throw metal_error(buf);
+        std::string msg = std::string("Metal error: call '")
+                        + call
+                        + "' returned null ("
+                        + file
+                        + ":"
+                        + std::to_string(line)
+                        + ")";
+        throw metal_error(msg);
     }
 }
 
