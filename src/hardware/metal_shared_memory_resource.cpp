@@ -29,7 +29,7 @@ std::shared_ptr<memory_heap> metal_shared_memory_resource::create_memory_heap(
 {
     // Check alignment
     if (alignment > get_max_heap_alignment()) {
-        throw std::runtime_error(
+        throw std::invalid_argument(
             "Requested alignment exceeds maximum allowed alignment"
         );
     }
