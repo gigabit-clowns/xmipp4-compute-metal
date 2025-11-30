@@ -10,7 +10,7 @@
 namespace xmipp4 
 {
 
-const std::string metal_plugin::name = "xmipp4-hardware-metal";
+const std::string metal_plugin::name = "xmipp4-metal";
 
 const std::string& metal_plugin::get_name() const noexcept
 {
