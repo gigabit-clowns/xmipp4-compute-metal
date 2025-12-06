@@ -2,7 +2,6 @@
 
 #include "metal_memory_heap.hpp"
 
-#include <xmipp4/metal/hardware/metal_error.hpp>
 #include <xmipp4/metal/hardware/metal_device.hpp>
 #include <xmipp4/metal/hardware/metal_buffer.hpp>
 #include <xmipp4/core/platform/assert.hpp>

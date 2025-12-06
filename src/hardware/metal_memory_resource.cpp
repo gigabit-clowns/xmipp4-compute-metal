@@ -2,7 +2,6 @@
 
 #include "metal_memory_resource.hpp"
 
-#include <xmipp4/metal/hardware/metal_error.hpp>
 #include <xmipp4/core/memory/align.hpp>
 #include <xmipp4/core/system/host.hpp>
 
