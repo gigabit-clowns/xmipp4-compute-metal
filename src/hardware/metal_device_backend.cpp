@@ -59,8 +59,10 @@ void metal_device_backend::enumerate_devices(std::vector<std::size_t> &ids) cons
 	);
 }
 
-bool metal_device_backend::get_device_properties(std::size_t id, 
-												device_properties &desc ) const
+bool metal_device_backend::get_device_properties(
+	std::size_t id, 
+	device_properties &desc 
+) const
 {
 	NS::SharedPtr<MTL::Device> dev = get_metal_device_handle(id);
 	if (dev)
