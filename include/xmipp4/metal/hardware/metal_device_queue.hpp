@@ -55,8 +55,7 @@ class metal_device_queue final
         bool is_idle() const noexcept override;
 
     private:
-        MTL::CommandQueue * m_command_queue;
-        std::atomic_uint32_t m_pending_buffers = 0;
+        NS::SharedPtr<MTL::CommandQueue> m_command_queue;
 
 }
 

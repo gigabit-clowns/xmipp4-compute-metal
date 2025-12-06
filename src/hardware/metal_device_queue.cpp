@@ -64,15 +64,13 @@ void metal_device_queue::wait_until_completed() const
 {
 
     XMIPP4_ASSERT( m_command_queue );
-    while (m_pending_buffers.load() > 0)
-    {
-        std::this_thread::yield(); // sleep 0-1ms
-    }
+    //TODO: el puto oier me ha quitado mis pending buffers
 }
 
 bool metal_device_queue::is_idle() const noexcept
 {
-    return m_pending_buffers.load() == 0;
+    //TODO: el puto oier me ha quitado mis pending buffers
+    return true;
 }
 
 MTL::CommandBuffer* metal_device_queue::create_command_buffer()
@@ -81,24 +79,9 @@ MTL::CommandBuffer* metal_device_queue::create_command_buffer()
 
     auto cb = m_command_queue->commandBuffer();
     XMIPP4_ASSERT(cb);
-
-    // Increment nr of pending buffers
-    m_pending_buffers.fetch_add(1);
-
-    cb->addCompletedHandler([this](MTL::CommandBuffer* buffer){
-        m_pending_buffers.fetch_sub(1); // Decrement only after finished
-    });
-
+    //TODO: el puto oier me ha quitado mis pending buffers
     return cb;
 }
 
 } // namespace hardware
 } // namespace xmipp4
-
-/**
- * auto cb = m_command_queue->commandBuffer();
- * m_inflight_count.fetch_add(1);
- * cb->addCompletedHandler([this](MTL::CommandBuffer*){
-    m_inflight_count.fetch_sub(1);
- * });
- */
