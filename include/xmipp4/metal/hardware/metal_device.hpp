@@ -22,11 +22,11 @@ class metal_device final
   public:
     explicit metal_device(NS::SharedPtr<MTL::Device> device);
     metal_device(const metal_device &other) = delete;
-    metal_device(metal_device &&other) = default;
+    metal_device(metal_device &&other) = delete;
     ~metal_device() override = default;
 
     metal_device& operator=(const metal_device &other) = delete;
-    metal_device& operator=(metal_device &&other) = default;
+    metal_device& operator=(metal_device &&other) = delete;
 
     NS::SharedPtr<MTL::Device> get_device_handle() const noexcept;
 
