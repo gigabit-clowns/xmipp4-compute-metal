@@ -67,10 +67,5 @@ metal_device::create_device_to_host_event()
     //return std::make_shared<metal_event>();
 } 
 
-// TODO: Come back when this is done:
-//      metal_event
-//      metal_device_queue
-//      todo lo demas xd
-
 } // namespace hardware
 } // namespace xmipp4
