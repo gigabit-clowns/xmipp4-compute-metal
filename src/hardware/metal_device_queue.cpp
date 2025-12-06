@@ -5,7 +5,6 @@
 #include <xmipp4/core/platform/assert.hpp>
 
 #include <xmipp4/metal/hardware/metal_device.hpp>
-#include <xmipp4/metal/hardware/metal_error.hpp>
 
 #include <utility>
 
@@ -17,7 +16,7 @@ namespace hardware
 metal_device_queue::metal_device_queue(metal_device &device)
 {
     XMIPP4_ASSERT( device.get_device_handle() );
-    m_command_queue = device.get_device_handle()->newCommandQueue();
+    m_command_queue = NS::TransferPtr(device.get_device_handle()->newCommandQueue());
     XMIPP4_ASSERT( m_command_queue );   
 }
 
@@ -49,13 +48,13 @@ void metal_device_queue::reset() noexcept
 {
     if (m_command_queue)
     {
-        XMIPP4_METAL_CHECK( m_command_queue );
+        XMIPP4_ASSERT( m_command_queue );
         m_command_queue->release();
         m_command_queue = nullptr;
     }
 }
 
-MTL::CommandQueue *metal_device_queue::get_handle() noexcept
+NS::SharedPtr<MTL::CommandQueue> metal_device_queue::get_handle() noexcept
 {
     return m_command_queue;
 }
@@ -71,16 +70,6 @@ bool metal_device_queue::is_idle() const noexcept
 {
     //TODO: el puto oier me ha quitado mis pending buffers
     return true;
-}
-
-MTL::CommandBuffer* metal_device_queue::create_command_buffer()
-{
-    XMIPP4_ASSERT(m_command_queue);
-
-    auto cb = m_command_queue->commandBuffer();
-    XMIPP4_ASSERT(cb);
-    //TODO: el puto oier me ha quitado mis pending buffers
-    return cb;
 }
 
 } // namespace hardware

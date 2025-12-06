@@ -43,10 +43,7 @@ class metal_device_queue final
         void reset() noexcept;
 
         XMIPP4_HARDWARE_METAL_API
-        MTL::CommandQueue * get_handle() noexcept;
-
-        XMIPP4_HARDWARE_METAL_API
-        MTL::CommandBuffer * create_command_buffer() noexcept;
+        NS::SharedPtr<MTL::CommandQueue> get_handle() noexcept;
 
         XMIPP4_HARDWARE_METAL_API
         void wait_until_completed() const override;
@@ -57,7 +54,7 @@ class metal_device_queue final
     private:
         NS::SharedPtr<MTL::CommandQueue> m_command_queue;
 
-}
+};
 
 } // namespace hardware
 } // namespace xmipp4
