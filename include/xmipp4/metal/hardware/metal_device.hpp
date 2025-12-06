@@ -30,9 +30,9 @@ class metal_device final
 
     NS::SharedPtr<MTL::Device> get_device_handle() const noexcept;
 
-    void enumerate_memory_resources(
-        std::vector<memory_resource*> &resources
-    ) override;
+    memory_resource& get_device_local_memory_resource() noexcept override;
+
+    memory_resource& get_host_accessible_memory_resource() noexcept override;
 
     std::shared_ptr<device_queue>
     create_device_queue() override;
