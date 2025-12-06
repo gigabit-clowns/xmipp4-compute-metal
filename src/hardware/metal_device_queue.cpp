@@ -2,6 +2,8 @@
 
 #include <xmipp4/metal/hardware/metal_device_queue.hpp>
 
+#include <xmipp4/core/platform/assert.hpp>
+
 #include <xmipp4/metal/hardware/metal_device.hpp>
 #include <xmipp4/metal/hardware/metal_error.hpp>
 
