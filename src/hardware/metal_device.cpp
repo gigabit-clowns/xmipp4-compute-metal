@@ -4,7 +4,7 @@
 
 #include <xmipp4/core/platform/assert.hpp>
 
-#include "metal_device_queue.hpp"
+#include <xmipp4/metal/hardware/metal_device_queue.hpp>
 #include "metal_private_memory_resource.hpp"
 #include "metal_shared_memory_resource.hpp"
 
@@ -28,7 +28,7 @@ NS::SharedPtr<MTL::Device> metal_device::get_device_handle() const noexcept
     return m_device;
 }
 
-memory_resource& metal_device::get_device_local_memory_resource()
+memory_resource& metal_device::get_device_local_memory_resource() noexcept
 {
     XMIPP4_ASSERT(m_shared_memory_resource);
     if ( m_shared_memory_resource->get_kind() == memory_resource_kind::unified )
@@ -42,7 +42,7 @@ memory_resource& metal_device::get_device_local_memory_resource()
     }
 }
 
-memory_resource& metal_device::get_host_accessible_memory_resource()
+memory_resource& metal_device::get_host_accessible_memory_resource() noexcept
 {
     XMIPP4_ASSERT(m_shared_memory_resource);
     return *m_shared_memory_resource;
