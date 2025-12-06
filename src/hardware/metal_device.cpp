@@ -4,6 +4,7 @@
 
 #include <xmipp4/core/platform/assert.hpp>
 
+#include "metal_device_queue.hpp"
 #include "metal_private_memory_resource.hpp"
 #include "metal_shared_memory_resource.hpp"
 
@@ -50,8 +51,7 @@ memory_resource& metal_device::get_host_accessible_memory_resource()
 std::shared_ptr<device_queue>
 metal_device::create_device_queue()
 {
-    return nullptr; // TODO
-    //return std::make_shared<metal_device_queue>(*this);
+    return std::make_shared<metal_device_queue>(*this);
 }
 
 std::shared_ptr<device_event> metal_device::create_device_event()
