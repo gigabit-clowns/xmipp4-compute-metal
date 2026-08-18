@@ -1,20 +1,20 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
-#include "metal_plugin.hpp"
+#include "plugin.hpp"
 
-#include "hardware/metal_device_backend.hpp"
+#include "hardware/device_backend.hpp"
 
-#include <xmipp4/core/service_catalog.hpp>
 #include <xmipp4/core/hardware/device_manager.hpp>
+#include <xmipp4/core/service_catalog.hpp>
 
-namespace xmipp4 
+namespace xmipp4
 {
 
 const std::string metal_plugin::name = "xmipp4-metal";
 
 const std::string& metal_plugin::get_name() const noexcept
 {
-    return name; 
+    return name;
 }
 
 version metal_plugin::get_version() const noexcept
@@ -28,9 +28,8 @@ version metal_plugin::get_version() const noexcept
 
 void metal_plugin::register_at(service_catalog& catalog) const
 {
-    hardware::metal_device_backend::register_at(
-        catalog.get_service_manager<hardware::device_manager>()
-    );
+    const auto device_manager = catalog.get_service_manager<xmipp4::device_manager>();
+    metal::device_backend::register_at(*device_manager);
 }
 
 } // namespace xmipp4
