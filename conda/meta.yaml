@@ -1,0 +1,37 @@
+# SPDX-License-Identifier: GPL-3.0-only
+
+# File based on:
+# https://github.com/pybind/cmake_example/blob/master/conda.recipe/meta.yaml
+
+{% set version_match = load_file_regex(load_file="VERSION", regex_pattern='(\\d+\\.\\d+\\.\\d+)') %}
+{% set version = version_match[1] %}
+
+package:
+  name: xmipp4-metal
+  version: "0.1.0"
+
+about:
+  summary: Apple Metal hardware library for xmipp4
+  license_file: LICENSE
+
+source:
+  path: ../
+
+requirements:
+  run:
+    - xmipp4-core=0.1
+
+  host:
+    - python
+    - pip
+    - scikit-build-core
+    - xmipp4-core=0.1
+
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - cmake>=3.16
+    - ninja
+
+build:
+  number: 0

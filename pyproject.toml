@@ -1,37 +1,19 @@
-
-#***************************************************************************
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-# 02111-1307  USA
-#
-#  All comments concerning this program package may be sent to the
-#  e-mail address 'xmipp@cnb.csic.es'
-# ***************************************************************************
-
 [build-system]
-requires = ["scikit-build-core"]
+requires = [
+    "scikit-build-core==0.10",
+    "xmipp4-core @ https://github.com/gigabit-clowns/xmipp4-core/archive/refs/heads/main.zip" # TODO replace when xmipp4-core is in PyPI
+]
 build-backend = "scikit_build_core.build"
 
 [project]
-name = "xmipp4-compute-metal"
-version = "0.1.0"
+name = "xmipp4-metal"
+dynamic = ["version"]
 authors = [
     { name = "Oier Lauzirika Zarrabeitia", email = "oierlauzi@bizkaia.eu" },
     { name = "Martín Salinas Antón", email = "ssalinasmartin@gmail.com" },
     { name = "Mikel Iceta Tena", email = "m.icetatena@gmail.com" },
 ]
-description = "METAL compute backend for xmipp4"
+description = "METAL hardware backend for xmipp4"
 classifiers = [
 	"Topic :: Scientific/Engineering :: Image Processing",
     "Intended Audience :: Science/Research",
@@ -46,18 +28,24 @@ license = {file = "LICENSE"}
 
 requires-python = ">=3.9"
 dependencies = [ 
-    "xmipp4-core==0.1"
+    "xmipp4-core @ https://github.com/gigabit-clowns/xmipp4-core/archive/refs/heads/main.zip" # TODO replace when xmipp4-core is in PyPI
 ]
 
 [project.urls]
-Homepage = "https://github.com/gigabit-clowns/xmipp4-compute-metal"
+Homepage = "https://github.com/gigabit-clowns/xmipp4-metal"
 
 [tool.scikit-build]
 experimental=true # For wheel.install-dir
+wheel.install-dir="/data"
+wheel.py-api = "py3" # Version agnostic
 cmake.version = ">=3.16"
-cmake.args = []
-cmake.define = {}
 cmake.verbose = false
 cmake.build-type = "Release"
 
-wheel.install-dir="/data"
+[tool.scikit-build.cmake.define]
+BUILD_TESTING = "OFF"
+
+[tool.scikit-build.metadata.version]
+provider = "scikit_build_core.metadata.regex"
+input = "VERSION"
+regex = "(?P<value>\\d+\\.\\d+\\.\\d+)"
